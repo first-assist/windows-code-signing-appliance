@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RuntimeIdentifiers>linux-x64;win-x64</RuntimeIdentifiers>
+    <PublishSingleFile>true</PublishSingleFile>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>ArtifactSigning.Worker</AssemblyName>
+    <RootNamespace>ArtifactSigning.Worker</RootNamespace>
+    <VersionPrefix>0.11.2</VersionPrefix>
+    <Description>Listenerless Authenticode key-bearing worker boundary.</Description>
+    <!-- The executable exposes its engine surface to the separately built
+         acceptance tests and future installer validation tooling. -->
+    <NoWarn>$(NoWarn);CA1515</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" />
+    <ProjectReference Include="..\ArtifactSigning.Profiles\ArtifactSigning.Profiles.csproj" />
+    <ProjectReference Include="..\ArtifactSigning.Protocol\ArtifactSigning.Protocol.csproj" />
+    <ProjectReference Include="..\ArtifactSigning.Windows\ArtifactSigning.Windows.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\eng\InstalledProfileSet.cs" Link="Composition\InstalledProfileSet.cs" />
+  </ItemGroup>
+</Project>

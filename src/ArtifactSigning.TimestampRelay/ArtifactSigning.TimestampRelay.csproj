@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RuntimeIdentifiers>linux-x64;win-x64</RuntimeIdentifiers>
+    <PublishSingleFile>true</PublishSingleFile>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>ArtifactSigning.TimestampRelay</AssemblyName>
+    <RootNamespace>ArtifactSigning.TimestampRelay</RootNamespace>
+    <VersionPrefix>0.2.2</VersionPrefix>
+    <Description>Fixed-destination bounded RFC 3161 relay boundary.</Description>
+    <!-- Executable surfaces are public for the separate black-box test
+         assembly; JSON DTOs are instantiated through strict reflection. -->
+    <NoWarn>$(NoWarn);CA1515;CA1812</NoWarn>
+  </PropertyGroup>
+</Project>

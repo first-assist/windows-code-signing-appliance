@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RuntimeIdentifiers>linux-x64;win-x64</RuntimeIdentifiers>
+    <PublishSingleFile>true</PublishSingleFile>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>artifact-signctl</AssemblyName>
+    <RootNamespace>ArtifactSigning.Cli</RootNamespace>
+    <VersionPrefix>0.5.1</VersionPrefix>
+    <Description>Cross-platform Artifact Signing Service client.</Description>
+    <!-- JSON DTOs are reflection-created; executable-only boundaries and fixed exceptions are intentionally internal. HttpClient owns its handler. -->
+    <NoWarn>$(NoWarn);CA1032;CA1515;CA1812;CA2000</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ArtifactSigning.Protocol\ArtifactSigning.Protocol.csproj" />
+    <ProjectReference Include="..\ArtifactSigning.Profiles\ArtifactSigning.Profiles.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\eng\InstalledProfileSet.cs" Link="Composition\InstalledProfileSet.cs" />
+  </ItemGroup>
+</Project>

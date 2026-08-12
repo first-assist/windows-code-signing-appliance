@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RuntimeIdentifiers>linux-x64;win-x64</RuntimeIdentifiers>
+    <PublishSingleFile>true</PublishSingleFile>
+    <AssemblyName>ArtifactSigning.TestProfile</AssemblyName>
+    <RootNamespace>ArtifactSigning.TestProfile</RootNamespace>
+    <VersionPrefix>0.4.0</VersionPrefix>
+    <Description>The compiled ExampleEndpointBundleV1 test-only signing profile.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\ArtifactSigning.Profiles\ArtifactSigning.Profiles.csproj" />
+  </ItemGroup>
+</Project>

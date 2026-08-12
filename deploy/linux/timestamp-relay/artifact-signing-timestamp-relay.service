@@ -1,0 +1,44 @@
+[Unit]
+Description=Artifact Signing fixed RFC 3161 timestamp relay
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=exec
+User=artifact-timestamp
+Group=artifact-timestamp
+ExecStart=/opt/artifact-signing/timestamp-relay/ArtifactSigning.TimestampRelay
+WorkingDirectory=/opt/artifact-signing/timestamp-relay
+Restart=on-failure
+RestartSec=5s
+TimeoutStartSec=30s
+TimeoutStopSec=15s
+UMask=0077
+NoNewPrivileges=yes
+PrivateDevices=yes
+PrivateTmp=yes
+ProtectClock=yes
+ProtectControlGroups=yes
+ProtectHome=yes
+ProtectHostname=yes
+ProtectKernelLogs=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectProc=invisible
+ProtectSystem=strict
+ProcSubset=pid
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=yes
+RestrictRealtime=yes
+LockPersonality=yes
+# The self-contained .NET runtime requires executable JIT mappings. Runtime
+# W^X remains enabled; systemd's blanket executable-memory denial is not
+# compatible with this service.
+MemoryDenyWriteExecute=no
+RemoveIPC=yes
+CapabilityBoundingSet=
+AmbientCapabilities=
+SystemCallArchitectures=native
+
+[Install]
+WantedBy=multi-user.target

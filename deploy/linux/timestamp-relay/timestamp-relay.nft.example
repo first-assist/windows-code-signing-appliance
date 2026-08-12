@@ -1,0 +1,27 @@
+#!/usr/sbin/nft -f
+
+# Documentation-only addresses. Replace all four values with reviewed assignments.
+define relay_ip = 10.20.30.40
+define worker_ip = 10.20.30.41
+define relay_port = 8080
+define upstream_ip = 192.0.2.10
+
+table inet artifact_timestamp_relay {
+    chain input {
+        type filter hook input priority 0;
+        policy drop;
+
+        iifname "lo" accept
+        ct state established,related accept
+        ip saddr $worker_ip ip daddr $relay_ip tcp dport $relay_port accept
+    }
+
+    chain output {
+        type filter hook output priority 0;
+        policy drop;
+
+        oifname "lo" accept
+        ct state established,related accept
+        ip saddr $relay_ip ip daddr $upstream_ip tcp dport 443 accept
+    }
+}

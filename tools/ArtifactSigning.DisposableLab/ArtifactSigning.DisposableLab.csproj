@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RuntimeIdentifiers>linux-x64;win-x64</RuntimeIdentifiers>
+    <PublishSingleFile>true</PublishSingleFile>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>ArtifactSigning.DisposableLab</AssemblyName>
+    <RootNamespace>ArtifactSigning.DisposableLab</RootNamespace>
+    <VersionPrefix>0.2.2</VersionPrefix>
+    <Description>Fixed disposable Windows acceptance bootstrap for Artifact Signing.</Description>
+    <NoWarn>$(NoWarn);CA1031;CA1303;CA1515;CA1812;CA2000</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" />
+    <ProjectReference Include="..\..\tests\ArtifactSigning.TestProfile\ArtifactSigning.TestProfile.csproj" />
+    <ProjectReference Include="..\..\src\ArtifactSigning.Profiles\ArtifactSigning.Profiles.csproj" />
+    <ProjectReference Include="..\..\src\ArtifactSigning.Protocol\ArtifactSigning.Protocol.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile
+      Include="..\..\tests\ArtifactSigning.TestProfile.Tests\ExampleBundleTestData.cs"
+      Link="Fixtures\ExampleBundleTestData.cs" />
+  </ItemGroup>
+</Project>

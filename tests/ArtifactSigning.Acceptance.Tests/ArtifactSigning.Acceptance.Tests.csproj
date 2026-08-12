@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RootNamespace>ArtifactSigning.Acceptance.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\ArtifactSigning.Cli\ArtifactSigning.Cli.csproj" />
+    <ProjectReference Include="..\..\src\ArtifactSigning.Gateway\ArtifactSigning.Gateway.csproj" />
+    <ProjectReference Include="..\ArtifactSigning.TestProfile\ArtifactSigning.TestProfile.csproj" />
+    <ProjectReference Include="..\..\src\ArtifactSigning.Windows\ArtifactSigning.Windows.csproj" />
+    <ProjectReference Include="..\..\src\ArtifactSigning.Worker\ArtifactSigning.Worker.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile
+      Include="..\ArtifactSigning.TestProfile.Tests\ExampleBundleTestData.cs"
+      Link="Fixtures\ExampleBundleTestData.cs" />
+  </ItemGroup>
+
+  <Import Project="..\..\eng\Testing.props" />
+</Project>

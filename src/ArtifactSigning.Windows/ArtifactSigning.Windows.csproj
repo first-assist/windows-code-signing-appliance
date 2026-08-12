@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <PublishSingleFile>true</PublishSingleFile>
+    <AssemblyName>ArtifactSigning.Windows</AssemblyName>
+    <RootNamespace>ArtifactSigning.Windows</RootNamespace>
+    <VersionPrefix>0.7.2</VersionPrefix>
+    <Description>Windows Authenticode verification and certificate-store adapters.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Security.Cryptography.Pkcs" />
+  </ItemGroup>
+</Project>

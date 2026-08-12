@@ -1,0 +1,13 @@
+<Project>
+  <PropertyGroup Condition="$([System.String]::Copy('$(TargetFramework)').Contains('-windows'))">
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ArtifactSigningProfileCompositionProps
+      Condition="'$(ArtifactSigningProfileCompositionProps)' == ''">$(MSBuildThisFileDirectory)eng/ProfileComposition/Generated/ArtifactSigning.ProfileComposition.props</ArtifactSigningProfileCompositionProps>
+  </PropertyGroup>
+
+  <Import Project="$(ArtifactSigningProfileCompositionProps)"
+          Condition="Exists('$(ArtifactSigningProfileCompositionProps)')" />
+</Project>

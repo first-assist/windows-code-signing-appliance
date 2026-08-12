@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RootNamespace>ArtifactSigning.Gateway.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" />
+    <ProjectReference Include="..\..\src\ArtifactSigning.Gateway\ArtifactSigning.Gateway.csproj" />
+    <ProjectReference Include="..\ArtifactSigning.TestProfile\ArtifactSigning.TestProfile.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\..\eng\Testing.props" />
+</Project>

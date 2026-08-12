@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RootNamespace>ArtifactSigning.Windows.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\ArtifactSigning.Windows\ArtifactSigning.Windows.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\..\eng\Testing.props" />
+</Project>

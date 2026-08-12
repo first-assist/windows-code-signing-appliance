@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RuntimeIdentifiers>linux-x64;win-x64</RuntimeIdentifiers>
+    <PublishSingleFile>true</PublishSingleFile>
+    <AssemblyName>ArtifactSigning.Protocol</AssemblyName>
+    <RootNamespace>ArtifactSigning.Protocol</RootNamespace>
+    <VersionPrefix>0.8.0</VersionPrefix>
+    <Description>Project-agnostic signing protocol contracts and cryptographic encodings.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Security.Cryptography.Pkcs" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,8 @@
+* @first-assist
+
+/.github/ @first-assist
+/src/ArtifactSigning.Protocol/ @first-assist
+/src/ArtifactSigning.Profiles/ @first-assist
+/src/ArtifactSigning.Worker/ @first-assist
+/installer/ @first-assist
+/SECURITY.md @first-assist

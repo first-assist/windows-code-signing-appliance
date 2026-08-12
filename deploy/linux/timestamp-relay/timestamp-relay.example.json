@@ -1,0 +1,16 @@
+{
+  "Format": "ArtifactSigningTimestampRelayConfigurationV1",
+  "Mode": "Production",
+  "BindAddress": "10.20.30.40",
+  "BindPort": 8080,
+  "AllowedClientAddresses": [
+    "10.20.30.41"
+  ],
+  "UpstreamUrl": "https://timestamp.example.invalid/timestamp",
+  "UpstreamAddresses": [
+    "192.0.2.10"
+  ],
+  "ConnectTimeoutSeconds": 2,
+  "TotalTimeoutSeconds": 5,
+  "RequestsPerMinute": 2
+}

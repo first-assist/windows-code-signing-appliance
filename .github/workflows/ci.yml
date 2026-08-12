@@ -1,0 +1,126 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  build-and-test:
+    name: build-and-test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - windows-2025
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install pinned .NET SDK
+        uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5
+        with:
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: "**/packages.lock.json"
+
+      - name: Restore locked dependencies with audit
+        run: dotnet restore ArtifactSigning.sln --locked-mode -p:NuGetAudit=true -p:NuGetAuditMode=all -p:NuGetAuditLevel=low
+
+      - name: Verify formatting and analyzers
+        run: dotnet format ArtifactSigning.sln --verify-no-changes --no-restore
+
+      - name: Build with warnings denied
+        run: dotnet build ArtifactSigning.sln --configuration Release --no-restore
+
+      - name: Verify installer source contracts
+        shell: pwsh
+        run: ./tests/installer/Installer.Source.Tests.ps1
+
+      - name: Verify installer source contracts under Windows PowerShell 5.1
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: ./tests/installer/Installer.Source.Tests.ps1
+
+      - name: Verify locked distributable publishes
+        if: runner.os == 'Linux'
+        shell: pwsh
+        run: |
+          $root = Join-Path $env:RUNNER_TEMP 'artifact-signing-publish'
+          $publishes = @(
+            @('src/ArtifactSigning.Gateway/ArtifactSigning.Gateway.csproj', 'win-x64', 'Gateway'),
+            @('src/ArtifactSigning.Worker/ArtifactSigning.Worker.csproj', 'win-x64', 'Worker'),
+            @('src/ArtifactSigning.Cli/ArtifactSigning.Cli.csproj', 'win-x64', 'CliWindows'),
+            @('src/ArtifactSigning.Cli/ArtifactSigning.Cli.csproj', 'linux-x64', 'CliLinux'),
+            @('src/ArtifactSigning.TimestampRelay/ArtifactSigning.TimestampRelay.csproj', 'linux-x64', 'TimestampRelay'),
+            @('tools/ArtifactSigning.DisposableLab/ArtifactSigning.DisposableLab.csproj', 'win-x64', 'DisposableLab')
+          )
+          foreach ($publish in $publishes) {
+            dotnet publish $publish[0] `
+              --configuration Release `
+              --runtime $publish[1] `
+              --self-contained true `
+              --no-restore `
+              --output (Join-Path $root $publish[2]) `
+              -p:PublishSingleFile=true `
+              -p:IncludeNativeLibrariesForSelfExtract=true `
+              -p:PublishTrimmed=false `
+              -p:PublishReadyToRun=false
+            if ($LASTEXITCODE -ne 0) {
+              throw 'A locked distributable publish failed.'
+            }
+          }
+
+      - name: Configure disposable Windows signing matrix
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $kitsRoot = (Get-ItemProperty `
+            'HKLM:\SOFTWARE\Microsoft\Windows Kits\Installed Roots').KitsRoot10
+          $signTool = Get-ChildItem `
+            -LiteralPath (Join-Path $kitsRoot 'bin') `
+            -Filter 'signtool.exe' `
+            -File `
+            -Recurse |
+              Where-Object { $_.Directory.Name -eq 'x64' } |
+              Sort-Object {
+                [Version]$_.Directory.Parent.Name
+              } -Descending |
+              Select-Object -First 1
+          if ($null -eq $signTool) {
+            throw 'The Windows runner has no x64 SDK SignTool.'
+          }
+
+          Write-Output "::add-mask::$($signTool.FullName)"
+          "ARTIFACT_SIGNING_RUN_GENERATED_MATRIX=1" >> $env:GITHUB_ENV
+          "ARTIFACT_SIGNING_TEST_SIGNTOOL=$($signTool.FullName)" >> $env:GITHUB_ENV
+
+      - name: Run tests
+        run: dotnet test ArtifactSigning.sln --configuration Release --no-build --no-restore
+
+      - name: Report vulnerable dependencies
+        run: dotnet list ArtifactSigning.sln package --vulnerable --include-transitive
+
+  secret-scan:
+    name: secret-scan
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Check out complete history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Scan committed content
+        uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

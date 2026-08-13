@@ -4,9 +4,9 @@
     "net10.0-windows7.0": {
       "Microsoft.AspNetCore.TestHost": {
         "type": "Direct",
-        "requested": "[10.0.10, )",
-        "resolved": "10.0.10",
-        "contentHash": "Kks+OpQlP/eWQhnTjkiv0H9kc9Uqa7ieAzNV62yJpZ8Ips/WwpfpwrwZUKzV83CBJaBl5OI7J2XxVVTC8vah/Q=="
+        "requested": "[10.0.11, )",
+        "resolved": "10.0.11",
+        "contentHash": "IVGNbZVxLuL80y7cmXYfhIFoTGneHkp4D7xXarYe6V/wjo8/2qiSLUwWax1/h2eHtJ3Y5cuqmtpOyWMnXIsUMA=="
       },
       "Microsoft.NET.Test.Sdk": {
         "type": "Direct",
